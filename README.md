@@ -1,71 +1,51 @@
-# vscode-binance-watcher README
+# Binance Watcher - VS Code 插件
 
-This is the README for your extension "vscode-binance-watcher". After writing up a brief description, we recommend including the following sections.
+在 VS Code 状态栏上实时显示币安交易对价格和变化信息
 
-## Features
+## 功能
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+- 在 VS Code 状态栏实时显示币安加密货币交易对价格
+- 支持自定义交易对列表
+- 显示价格、24小时价格变化百分比和成交量
+- 根据币安交易对精度规则自动格式化价格和数量显示
+  - 使用交易对的 tickSize 确定价格精度
+  - 使用交易对的 stepSize 确定数量精度
+- 价格变化正负值以不同颜色区分显示
+- 支持手动刷新数据
+- 可以随时切换显示/隐藏状态栏信息
 
-For example if there is an image subfolder under your extension project workspace:
+## 安装
 
-\!\[feature X\]\(images/feature-x.png\)
+1. 在 VS Code 扩展面板中搜索 "Binance Watcher"
+2. 点击安装
+3. 重启 VS Code
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+## 使用方法
 
-## Requirements
+安装后，插件会自动在 VS Code 状态栏右侧显示默认交易对（BTCUSDT 和 ETHUSDT）的实时价格信息。
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+### 配置选项
 
-## Extension Settings
+在 VS Code 设置中，可以自定义以下配置项：
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+- `binanceWatcher.symbols`: 要监控的交易对列表，默认为 ["BTCUSDT", "ETHUSDT"]
+- `binanceWatcher.updateInterval`: 数据更新间隔（毫秒），默认为 2000
+- `binanceWatcher.visible`: 是否在状态栏显示，默认为 true
 
-For example:
+### 可用命令
 
-This extension contributes the following settings:
+在 VS Code 命令面板 (Ctrl+Shift+P / Cmd+Shift+P) 中可以使用以下命令：
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+- `Binance Watcher: 刷新数据` - 手动刷新交易对数据
+- `Binance Watcher: 切换显示/隐藏` - 切换状态栏信息的显示状态
 
-## Known Issues
+## 技术说明
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+- 使用币安官方 WebSocket API 获取实时交易数据
+- 通过交易所信息 API 获取并应用正确的交易对精度规则
+- 不需要 API 密钥，使用的是公开数据接口
+- 使用 TypeScript 开发，良好的类型支持
 
-## Release Notes
+## License
 
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+MIT

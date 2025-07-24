@@ -1,23 +1,49 @@
 {
   "name": "vscode-binance-watcher",
-  "displayName": "vscode-binance-watcher",
+  "displayName": "Binance Watcher",
   "description": "在vscode上实时查看币安交易对、加密货币交易对",
   "version": "0.0.1",
   "engines": {
-    "vscode": "1.90.0"
+    "vscode": "^1.90.0"
   },
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "vscode-binance-watcher.helloWorld",
-        "title": "Hello World"
+        "command": "vscode-binance-watcher.refresh",
+        "title": "Binance Watcher: 刷新数据"
+      },
+      {
+        "command": "vscode-binance-watcher.toggleVisibility",
+        "title": "Binance Watcher: 切换显示/隐藏"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "Binance Watcher",
+      "properties": {
+        "binanceWatcher.symbols": {
+          "type": "array",
+          "default": ["BTCUSDT", "ETHUSDT"],
+          "description": "要监控的交易对列表"
+        },
+        "binanceWatcher.updateInterval": {
+          "type": "number",
+          "default": 2000,
+          "description": "数据更新间隔（毫秒）"
+        },
+        "binanceWatcher.visible": {
+          "type": "boolean",
+          "default": true,
+          "description": "是否显示在状态栏"
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "pnpm run package",
@@ -34,9 +60,10 @@
     "test": "vscode-test"
   },
   "devDependencies": {
-    "@types/vscode": "1.90.0",
+    "@types/vscode": "^1.90.0",
     "@types/mocha": "^10.0.10",
     "@types/node": "20.x",
+    "@types/ws": "^8.5.10",
     "@typescript-eslint/eslint-plugin": "^8.31.1",
     "@typescript-eslint/parser": "^8.31.1",
     "eslint": "^9.25.1",
@@ -45,5 +72,8 @@
     "typescript": "^5.8.3",
     "@vscode/test-cli": "^0.0.11",
     "@vscode/test-electron": "^2.5.2"
+  },
+  "dependencies": {
+    "ws": "^8.16.0"
   }
 }

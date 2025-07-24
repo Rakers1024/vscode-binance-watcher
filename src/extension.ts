@@ -1,26 +1,146 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import { BinanceService, TickerData } from './binanceService';
+import { SymbolInfoService } from './symbolInfoService';
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
+  console.log('Binance Watcher 扩展已激活');
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "vscode-binance-watcher" is now active!');
+  const symbolInfoService = new SymbolInfoService();
+  const binanceService = new BinanceService(symbolInfoService);
+  const statusBarItems: Map<string, vscode.StatusBarItem> = new Map();
+  
+  // 从配置中获取设置
+  function getConfiguration() {
+    const config = vscode.workspace.getConfiguration('binanceWatcher');
+    return {
+      symbols: config.get<string[]>('symbols', ['BTCUSDT', 'ETHUSDT']),
+      updateInterval: config.get<number>('updateInterval', 2000),
+      visible: config.get<boolean>('visible', true)
+    };
+  }
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	const disposable = vscode.commands.registerCommand('vscode-binance-watcher.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from vscode-binance-watcher!');
-	});
+  // 创建状态栏项
+  function createStatusBarItems(symbols: string[]) {
+    // 清除现有的状态栏项
+    for (const item of statusBarItems.values()) {
+      item.dispose();
+    }
+    statusBarItems.clear();
 
-	context.subscriptions.push(disposable);
+    // 为每个交易对创建新的状态栏项
+    symbols.forEach((symbol, index) => {
+      const item = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100 - index);
+      statusBarItems.set(symbol, item);
+      
+      if (getConfiguration().visible) {
+        item.show();
+      } else {
+        item.hide();
+      }
+    });
+  }
+
+  // 更新状态栏显示
+  function updateStatusBarItems() {
+    binanceService.getAllTickerData().forEach((data: TickerData, symbol: string) => {
+      const item = statusBarItems.get(symbol);
+      if (item) {
+        const percent = parseFloat(data.priceChangePercent);
+        const icon = percent >= 0 ? '$(arrow-up)' : '$(arrow-down)';
+        const color = percent >= 0 ? 'green' : 'red';
+        
+        // 使用格式化后的价格
+        item.text = `${symbol}: ${data.formattedPrice} ${icon} ${data.priceChangePercent}%`;
+        item.color = new vscode.ThemeColor(color);
+        item.tooltip = `${symbol}\n价格: ${data.formattedPrice} USDT\n24小时变化: ${data.priceChangePercent}%\n成交量: ${data.formattedVolume}`;
+        item.command = 'vscode-binance-watcher.refresh';
+      }
+    });
+  }
+
+  // 初始化连接
+  async function initialize() {
+    const config = getConfiguration();
+    createStatusBarItems(config.symbols);
+    
+    try {
+      // 先加载交易对信息
+      await symbolInfoService.loadSymbolInfo();
+      // 连接WebSocket
+      await binanceService.connect(config.symbols);
+    } catch (error) {
+      vscode.window.showErrorMessage(`连接币安WebSocket失败: ${error}`);
+    }
+  }
+
+  // 刷新数据
+  const refreshCommand = vscode.commands.registerCommand('vscode-binance-watcher.refresh', async () => {
+    const config = getConfiguration();
+    createStatusBarItems(config.symbols);
+    
+    try {
+      await binanceService.connect(config.symbols);
+      vscode.window.showInformationMessage('币安数据已刷新');
+    } catch (error) {
+      vscode.window.showErrorMessage(`刷新数据失败: ${error}`);
+    }
+  });
+
+  // 切换显示/隐藏
+  const toggleVisibilityCommand = vscode.commands.registerCommand('vscode-binance-watcher.toggleVisibility', () => {
+    const config = vscode.workspace.getConfiguration('binanceWatcher');
+    const currentVisibility = config.get<boolean>('visible', true);
+    
+    // 更新配置
+    config.update('visible', !currentVisibility, vscode.ConfigurationTarget.Global)
+      .then(() => {
+        // 更新状态栏项显示状态
+        for (const item of statusBarItems.values()) {
+          if (!currentVisibility) {
+            item.show();
+          } else {
+            item.hide();
+          }
+        }
+        
+        vscode.window.showInformationMessage(`币安监视器已${!currentVisibility ? '显示' : '隐藏'}`);
+      });
+  });
+
+  // 监听配置变化
+  const configChangeListener = vscode.workspace.onDidChangeConfiguration(async (e) => {
+    if (e.affectsConfiguration('binanceWatcher')) {
+      await initialize();
+    }
+  });
+
+  // 监听币安服务数据变化
+  const dataChangeListener = binanceService.onDidChangeData(() => {
+    updateStatusBarItems();
+  });
+
+  // 初始化
+  initialize();
+
+  // 注册清理函数
+  context.subscriptions.push(
+    refreshCommand,
+    toggleVisibilityCommand,
+    configChangeListener,
+    dataChangeListener,
+    {
+      dispose: () => {
+        binanceService.disconnect();
+        for (const item of statusBarItems.values()) {
+          item.dispose();
+        }
+      }
+    }
+  );
 }
 
-// This method is called when your extension is deactivated
-export function deactivate() {}
+export function deactivate() {
+  // 扩展停用时的清理工作
+}
