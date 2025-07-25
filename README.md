@@ -1,38 +1,41 @@
-# Binance Watcher - VS Code 插件
+# Binance Watcher - VS Code Extension
 
-在 VS Code 状态栏上实时显示币安交易对价格和变化信息
+Real-time display of Binance trading pairs in VS Code status bar
 
-## 做这个的理由
- 在插件市场找了一圈没找到好的跟币安有关的插件，我想各位想必都赚钱了？没人开发类似的插件，所以只能直接动手做个插件了，几乎全程AI，所以代码写得有问题 就找Cursor吧，我不背锅。有需求可以提issue, 随缘更新。
+[简体中文](./README-CN.md) | English
 
-## 功能
+## Why I Made This
 
-- 在 VS Code 状态栏实时显示币安加密货币交易对价格
-- 支持自定义交易对列表和别名显示
-- 显示价格、24小时价格变化百分比和成交量
-- 根据币安交易对精度规则自动格式化价格和数量显示
-  - 使用交易对的 tickSize 确定价格精度
-  - 使用交易对的 stepSize 确定数量精度
-- 价格变化正负值以不同颜色区分显示
-- 可自定义显示/隐藏涨跌箭头和百分比
-- 支持手动刷新数据
-- 可以随时切换显示/隐藏状态栏信息
+After searching through the VS Code marketplace, I couldn't find any good Binance-related extensions. So I decided to create one myself. The development was mostly AI-assisted, so if there are issues with the code, please contact me or create an issue. I'll update the extension when I have time.
 
-## 安装
+## Features
 
-1. 在 VS Code 扩展面板中搜索 "Binance Watcher"
-2. 点击安装
-3. 重启 VS Code
+- Real-time display of Binance cryptocurrency prices in VS Code status bar
+- Customizable trading pairs list with aliases
+- Display price, 24-hour price change percentage, and volume
+- Automatic price and quantity formatting based on Binance trading pair precision rules
+  - Using tickSize for price precision
+  - Using stepSize for quantity precision
+- Price changes indicated with different colors
+- Customizable display options for arrows and percentages
+- Manual data refresh support
+- Toggle visibility in status bar
 
-## 使用方法
+## Installation
 
-安装后，插件会自动在 VS Code 状态栏右侧显示默认交易对（BTCUSDT 和 ETHUSDT）的实时价格信息。
+1. Search for "Binance Watcher" in the VS Code extensions panel
+2. Click Install
+3. Restart VS Code
 
-### 配置选项
+## How to Use
 
-在 VS Code 设置中，可以自定义以下配置项：
+After installation, the extension will automatically display real-time price information for default trading pairs (BTCUSDT and ETHUSDT) on the right side of the VS Code status bar.
 
-- `binanceWatcher.symbolsConfigs`: 要监控的交易对列表及其别名，例如：
+### Configuration Options
+
+You can customize the following settings in VS Code:
+
+- `binanceWatcher.symbolsConfigs`: List of trading pairs to monitor and their aliases, for example:
   ```json
   [
     {
@@ -45,51 +48,53 @@
     }
   ]
   ```
-- `binanceWatcher.updateInterval`: 数据更新间隔（毫秒），默认为 2000
-- `binanceWatcher.visible`: 是否在状态栏显示，默认为 true
-- `binanceWatcher.showArrow`: 是否显示涨跌箭头，默认为 true
-- `binanceWatcher.showPercentage`: 是否显示涨跌百分比，默认为 true
+- `binanceWatcher.updateInterval`: Data update interval (milliseconds), default is 2000
+- `binanceWatcher.visible`: Whether to display in the status bar, default is true
+- `binanceWatcher.showArrow`: Whether to display up/down arrows, default is true
+- `binanceWatcher.showPercentage`: Whether to display price change percentages, default is true
 
-### 可用命令
+### Available Commands
 
-在 VS Code 命令面板 (Ctrl+Shift+P / Cmd+Shift+P) 中可以使用以下命令：
+In the VS Code command palette (Ctrl+Shift+P / Cmd+Shift+P), you can use the following commands:
 
-- `Binance Watcher: 刷新数据` - 手动刷新交易对数据
-- `Binance Watcher: 切换显示/隐藏` - 切换状态栏信息的显示状态
+- `Binance Watcher: Refresh Data` - Manually refresh trading pair data
+- `Binance Watcher: Toggle Visibility` - Toggle the display of status bar information
 
-## 交易对别名配置示例
+## Trading Pair Alias Configuration Example
 
-可以为交易对设置更直观的别名，方便在状态栏中显示：
+You can set more intuitive aliases for trading pairs to display in the status bar:
 
 ```json
 "binanceWatcher.symbolsConfigs": [
   {
     "symbol": "BTCUSDT",
-    "alias": "比特币"
+    "alias": "Bitcoin"
   },
   {
     "symbol": "ETHUSDT",
-    "alias": "以太坊"
+    "alias": "Ethereum"
   },
   {
     "symbol": "BNBUSDT",
-    "alias": "币安币"
+    "alias": "BNB"
   }
 ]
 ```
 
-## 技术说明
+## Technical Details
 
-- 使用币安官方 WebSocket API 获取实时交易数据
-- 通过交易所信息 API 获取并应用正确的交易对精度规则
-- 不需要 API 密钥，使用的是公开数据接口
-- 使用 TypeScript 开发，良好的类型支持
+- Uses Binance official WebSocket API for real-time data
+- Obtains and applies correct trading pair precision rules via Exchange Info API
+- No API key required, uses public data interfaces
+- Developed with TypeScript for good type support
 
-## 祝各位大哥大佬赚大钱
- - 如果该插件对你有用 可以给点成本 我再去梭哈，赚了还你哈哈。
+## Support the Project
+
+- If this extension is useful to you, consider supporting its development.
+
 <div style="display: flex; justify-content: space-between;">
-  <img src="./static/IMG_8692.JPG" width="48%" alt="支付宝打赏" />
-  <img src="./static/IMG_8693.JPG" width="48%" alt="微信打赏" />
+  <img src="./static/IMG_8692.JPG" width="48%" alt="BNB Smart Chain - USDT" />
+  <img src="./static/IMG_8693.JPG" width="48%" alt="BNB Smart Chain - BNB" />
 </div>
 
 ## License
