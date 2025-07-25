@@ -19,6 +19,7 @@
 - 可自定义显示/隐藏涨跌箭头和百分比
 - 支持手动刷新数据
 - 可以随时切换显示/隐藏状态栏信息
+- 可配置状态栏显示位置
 
 ## 安装
 
@@ -51,6 +52,11 @@
 - `binanceWatcher.visible`: 是否在状态栏显示，默认为 true
 - `binanceWatcher.showArrow`: 是否显示涨跌箭头，默认为 true
 - `binanceWatcher.showPercentage`: 是否显示涨跌百分比，默认为 true
+- `binanceWatcher.statusBarPosition`: 状态栏显示位置，选项有：
+  - `leftStart`: 左侧状态栏最左边
+  - `leftEnd`: 左侧状态栏最右边（默认）
+  - `rightStart`: 右侧状态栏最左边
+  - `rightEnd`: 右侧状态栏最右边
 
 ### 可用命令
 

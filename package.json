@@ -3,10 +3,10 @@
   "displayName": "Binance Watcher",
   "description": "在vscode上实时查看币安交易对、加密货币交易对",
   "version": "1.0.1",
-  "publisher": "rakers",
+  "publisher": "Rakers1024",
   "repository": {
     "type": "git",
-    "url": "https://github.com/rakers/vscode-binance-watcher.git"
+    "url": "https://github.com/Rakers1024/vscode-binance-watcher.git"
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
@@ -97,6 +97,18 @@
           "type": "boolean",
           "default": true,
           "description": "是否显示涨跌百分比"
+        },
+        "binanceWatcher.statusBarPosition": {
+          "type": "string",
+          "default": "leftEnd",
+          "enum": ["leftStart", "leftEnd", "rightStart", "rightEnd"],
+          "enumDescriptions": [
+            "左侧状态栏最左边",
+            "左侧状态栏最右边",
+            "右侧状态栏最左边",
+            "右侧状态栏最右边"
+          ],
+          "description": "状态栏显示位置"
         }
       }
     }

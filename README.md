@@ -20,6 +20,7 @@ After searching through the VS Code marketplace, I couldn't find any good Binanc
 - Customizable display options for arrows and percentages
 - Manual data refresh support
 - Toggle visibility in status bar
+- Configurable status bar position
 
 ## Installation
 
@@ -52,6 +53,11 @@ You can customize the following settings in VS Code:
 - `binanceWatcher.visible`: Whether to display in the status bar, default is true
 - `binanceWatcher.showArrow`: Whether to display up/down arrows, default is true
 - `binanceWatcher.showPercentage`: Whether to display price change percentages, default is true
+- `binanceWatcher.statusBarPosition`: Position in the status bar, options are:
+  - `leftStart`: Left side of the status bar, far left position
+  - `leftEnd`: Left side of the status bar, far right position (default)
+  - `rightStart`: Right side of the status bar, far left position
+  - `rightEnd`: Right side of the status bar, far right position
 
 ### Available Commands
 

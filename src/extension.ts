@@ -26,7 +26,8 @@ export function activate(context: vscode.ExtensionContext) {
       updateInterval: config.get<number>('updateInterval', 2000),
       visible: config.get<boolean>('visible', true),
       showArrow: config.get<boolean>('showArrow', true),
-      showPercentage: config.get<boolean>('showPercentage', true)
+      showPercentage: config.get<boolean>('showPercentage', true),
+      statusBarPosition: config.get<string>('statusBarPosition', 'leftEnd')
     };
   }
 
@@ -38,9 +39,46 @@ export function activate(context: vscode.ExtensionContext) {
     }
     statusBarItems.clear();
 
+    const config = getConfiguration();
+    const position = config.statusBarPosition;
+    
+    // 根据配置确定状态栏对齐方式和优先级
+    let alignment: vscode.StatusBarAlignment;
+    let priorityBase: number;
+    
+    switch (position) {
+      case 'leftStart':
+        alignment = vscode.StatusBarAlignment.Left;
+        priorityBase = 1000; // 高优先级，显示在左侧最左边
+        break;
+      case 'leftEnd':
+        alignment = vscode.StatusBarAlignment.Left;
+        priorityBase = 1; // 低优先级，显示在左侧最右边
+        break;
+      case 'rightStart':
+        alignment = vscode.StatusBarAlignment.Right;
+        priorityBase = 1000; // 高优先级，显示在右侧最左边
+        break;
+      case 'rightEnd':
+      default:
+        alignment = vscode.StatusBarAlignment.Right;
+        priorityBase = 1; // 低优先级，显示在右侧最右边
+        break;
+    }
+
     // 为每个交易对创建新的状态栏项
     symbols.forEach((symbol, index) => {
-      const item = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100 - index);
+      // 根据不同位置设置不同的优先级计算方式
+      let priority: number;
+      if (position === 'leftStart' || position === 'rightStart') {
+        // 对于"Start"位置，索引越小优先级越高
+        priority = priorityBase - index;
+      } else {
+        // 对于"End"位置，索引越小优先级越低
+        priority = priorityBase + index;
+      }
+      
+      const item = vscode.window.createStatusBarItem(alignment, priority);
       statusBarItems.set(symbol, item);
       
       if (getConfiguration().visible) {
