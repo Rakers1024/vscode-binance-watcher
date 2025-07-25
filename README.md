@@ -5,12 +5,13 @@
 ## 功能
 
 - 在 VS Code 状态栏实时显示币安加密货币交易对价格
-- 支持自定义交易对列表
+- 支持自定义交易对列表和别名显示
 - 显示价格、24小时价格变化百分比和成交量
 - 根据币安交易对精度规则自动格式化价格和数量显示
   - 使用交易对的 tickSize 确定价格精度
   - 使用交易对的 stepSize 确定数量精度
 - 价格变化正负值以不同颜色区分显示
+- 可自定义显示/隐藏涨跌箭头和百分比
 - 支持手动刷新数据
 - 可以随时切换显示/隐藏状态栏信息
 
@@ -28,9 +29,23 @@
 
 在 VS Code 设置中，可以自定义以下配置项：
 
-- `binanceWatcher.symbols`: 要监控的交易对列表，默认为 ["BTCUSDT", "ETHUSDT"]
+- `binanceWatcher.symbolsConfigs`: 要监控的交易对列表及其别名，例如：
+  ```json
+  [
+    {
+      "symbol": "BTCUSDT",
+      "alias": "BTC"
+    },
+    {
+      "symbol": "ETHUSDT",
+      "alias": "ETH"
+    }
+  ]
+  ```
 - `binanceWatcher.updateInterval`: 数据更新间隔（毫秒），默认为 2000
 - `binanceWatcher.visible`: 是否在状态栏显示，默认为 true
+- `binanceWatcher.showArrow`: 是否显示涨跌箭头，默认为 true
+- `binanceWatcher.showPercentage`: 是否显示涨跌百分比，默认为 true
 
 ### 可用命令
 
@@ -38,6 +53,27 @@
 
 - `Binance Watcher: 刷新数据` - 手动刷新交易对数据
 - `Binance Watcher: 切换显示/隐藏` - 切换状态栏信息的显示状态
+
+## 交易对别名配置示例
+
+可以为交易对设置更直观的别名，方便在状态栏中显示：
+
+```json
+"binanceWatcher.symbolsConfigs": [
+  {
+    "symbol": "BTCUSDT",
+    "alias": "比特币"
+  },
+  {
+    "symbol": "ETHUSDT",
+    "alias": "以太坊"
+  },
+  {
+    "symbol": "BNBUSDT",
+    "alias": "币安币"
+  }
+]
+```
 
 ## 技术说明
 

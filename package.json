@@ -27,10 +27,33 @@
     "configuration": {
       "title": "Binance Watcher",
       "properties": {
-        "binanceWatcher.symbols": {
+        "binanceWatcher.symbolsConfigs": {
           "type": "array",
-          "default": ["BTCUSDT", "ETHUSDT"],
-          "description": "要监控的交易对列表"
+          "default": [
+            {
+              "symbol": "BTCUSDT",
+              "alias": "BTC"
+            },
+            {
+              "symbol": "ETHUSDT",
+              "alias": "ETH"
+            }
+          ],
+          "description": "要监控的交易对列表及其别名",
+          "items": {
+            "type": "object",
+            "required": ["symbol"],
+            "properties": {
+              "symbol": {
+                "type": "string",
+                "description": "交易对名称，例如 BTCUSDT"
+              },
+              "alias": {
+                "type": "string",
+                "description": "显示的别名，例如 BTC"
+              }
+            }
+          }
         },
         "binanceWatcher.updateInterval": {
           "type": "number",
@@ -41,6 +64,16 @@
           "type": "boolean",
           "default": true,
           "description": "是否显示在状态栏"
+        },
+        "binanceWatcher.showArrow": {
+          "type": "boolean",
+          "default": true,
+          "description": "是否显示涨跌箭头"
+        },
+        "binanceWatcher.showPercentage": {
+          "type": "boolean",
+          "default": true,
+          "description": "是否显示涨跌百分比"
         }
       }
     }

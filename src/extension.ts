@@ -3,21 +3,30 @@
 import * as vscode from 'vscode';
 import { BinanceService, TickerData } from './binanceService';
 import { SymbolInfoService } from './symbolInfoService';
+import { SymbolAliasService, SymbolConfig } from './symbolAliasService';
 
 export function activate(context: vscode.ExtensionContext) {
   console.log('Binance Watcher 扩展已激活');
 
   const symbolInfoService = new SymbolInfoService();
+  const symbolAliasService = new SymbolAliasService();
   const binanceService = new BinanceService(symbolInfoService);
   const statusBarItems: Map<string, vscode.StatusBarItem> = new Map();
   
   // 从配置中获取设置
   function getConfiguration() {
     const config = vscode.workspace.getConfiguration('binanceWatcher');
+    
+    // 获取交易对列表
+    const symbolsConfigs = config.get<SymbolConfig[]>('symbolsConfigs', []);
+    const symbols: string[] = symbolsConfigs.map(item => item.symbol);
+    
     return {
-      symbols: config.get<string[]>('symbols', ['BTCUSDT', 'ETHUSDT']),
+      symbols,
       updateInterval: config.get<number>('updateInterval', 2000),
-      visible: config.get<boolean>('visible', true)
+      visible: config.get<boolean>('visible', true),
+      showArrow: config.get<boolean>('showArrow', true),
+      showPercentage: config.get<boolean>('showPercentage', true)
     };
   }
 
@@ -44,6 +53,8 @@ export function activate(context: vscode.ExtensionContext) {
 
   // 更新状态栏显示
   function updateStatusBarItems() {
+    const config = getConfiguration();
+    
     binanceService.getAllTickerData().forEach((data: TickerData, symbol: string) => {
       const item = statusBarItems.get(symbol);
       if (item) {
@@ -51,8 +62,21 @@ export function activate(context: vscode.ExtensionContext) {
         const icon = percent >= 0 ? '$(arrow-up)' : '$(arrow-down)';
         const color = percent >= 0 ? 'green' : 'red';
         
-        // 使用格式化后的价格
-        item.text = `${symbol}: ${data.formattedPrice} ${icon} ${data.priceChangePercent}%`;
+        // 获取别名
+        const alias = symbolAliasService.getAlias(symbol);
+        
+        // 根据配置决定是否显示箭头和百分比
+        let displayText = `${alias}: ${data.formattedPrice}`;
+        
+        if (config.showArrow) {
+          displayText += ` ${icon}`;
+        }
+        
+        if (config.showPercentage) {
+          displayText += ` ${data.priceChangePercent}%`;
+        }
+        
+        item.text = displayText;
         item.color = new vscode.ThemeColor(color);
         item.tooltip = `${symbol}\n价格: ${data.formattedPrice} USDT\n24小时变化: ${data.priceChangePercent}%\n成交量: ${data.formattedVolume}`;
         item.command = 'vscode-binance-watcher.refresh';
@@ -62,6 +86,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   // 初始化连接
   async function initialize() {
+    symbolAliasService.updateAliasesFromConfig();
     const config = getConfiguration();
     createStatusBarItems(config.symbols);
     
@@ -77,6 +102,7 @@ export function activate(context: vscode.ExtensionContext) {
 
   // 刷新数据
   const refreshCommand = vscode.commands.registerCommand('vscode-binance-watcher.refresh', async () => {
+    symbolAliasService.updateAliasesFromConfig();
     const config = getConfiguration();
     createStatusBarItems(config.symbols);
     
