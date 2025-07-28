@@ -326,10 +326,10 @@
   dependencies:
     undici-types "~6.21.0"
 
-"@types/vscode@1.77.0":
-  version "1.77.0"
-  resolved "https://registry.npmmirror.com/@types/vscode/-/vscode-1.77.0.tgz#f92f15a636abc9ef562f44dd8af6766aefedb445"
-  integrity sha512-MWFN5R7a33n8eJZJmdVlifjig3LWUNRrPeO1xemIcZ0ae0TEQuRc7G2xV0LUX78RZFECY1plYBn+dP/Acc3L0Q==
+"@types/vscode@1.96.0":
+  version "1.96.0"
+  resolved "https://registry.npmmirror.com/@types/vscode/-/vscode-1.96.0.tgz#3181004bf25d71677ae4aacdd7605a3fd7edf08e"
+  integrity sha512-qvZbSZo+K4ZYmmDuaodMbAa67Pl6VDQzLKFka6rq+3WUTY4Kro7Bwoi0CuZLO/wema0ygcmpwow7zZfPJTs5jg==
 
 "@types/ws@^8.5.10":
   version "8.18.1"
