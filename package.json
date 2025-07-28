@@ -2,7 +2,7 @@
   "name": "vscode-binance-watcher",
   "displayName": "Binance Watcher",
   "description": "在vscode上实时查看币安交易对、加密货币交易对",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "publisher": "rakers",
   "icon": "static/binance-logo.png",
   "repository": {
