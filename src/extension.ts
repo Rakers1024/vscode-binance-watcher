@@ -49,7 +49,7 @@ export function activate(context: vscode.ExtensionContext) {
     switch (position) {
       case 'leftStart':
         alignment = vscode.StatusBarAlignment.Left;
-        priorityBase = 1000; // 高优先级，显示在左侧最左边
+        priorityBase = 99999999; // 高优先级，显示在左侧最左边
         break;
       case 'leftEnd':
         alignment = vscode.StatusBarAlignment.Left;
@@ -57,7 +57,7 @@ export function activate(context: vscode.ExtensionContext) {
         break;
       case 'rightStart':
         alignment = vscode.StatusBarAlignment.Right;
-        priorityBase = 1000; // 高优先级，显示在右侧最左边
+        priorityBase = 99999999; // 高优先级，显示在右侧最左边
         break;
       case 'rightEnd':
       default:
