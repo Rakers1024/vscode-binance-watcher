@@ -22,6 +22,7 @@
     "check-types": "tsc --noEmit",
     "lint": "eslint src",
     "test": "vscode-test",
+    "prepub": "vsce package",
     "pub": "vsce publish",
     "release": "npx bumpp --tag --commit"
   },
