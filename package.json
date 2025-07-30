@@ -7,7 +7,7 @@
   "icon": "static/binance-logo.png",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Rakers1024/vscode-binance-watcher.git"
+    "url": "https://github.com/Rakers1024/vscode-binance-watcher"
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
