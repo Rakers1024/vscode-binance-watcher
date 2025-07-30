@@ -99,8 +99,7 @@ You can set more intuitive aliases for trading pairs to display in the status ba
 - If this extension is useful to you, consider supporting its development.
 
 <div style="display: flex; justify-content: space-between;">
-  <img src="./static/IMG_8692.JPG" width="48%" alt="BNB Smart Chain - USDT" />
-  <img src="./static/IMG_8693.JPG" width="48%" alt="BNB Smart Chain - BNB" />
+  <img src="./static/IMG_8711.PNG" width="48%" alt="Binance Pay" />
 </div>
 
 ## License

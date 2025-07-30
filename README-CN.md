@@ -96,8 +96,7 @@
 ## 祝各位大哥大佬赚大钱
  - 如果该插件对你有用 可以给点成本 我再去梭哈，赚了还你哈哈。
 <div style="display: flex; justify-content: space-between;">
-  <img src="./static/IMG_8692.JPG" width="48%" alt="支付宝打赏" />
-  <img src="./static/IMG_8693.JPG" width="48%" alt="微信打赏" />
+  <img src="./static/IMG_8711.PNG" width="48%" alt="Binance支付" />
 </div>
 
 ## License
