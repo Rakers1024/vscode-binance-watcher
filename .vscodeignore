@@ -13,4 +13,5 @@ vsc-extension-quickstart.md
 **/*.ts
 **/.vscode-test.*
 static/*.JPG
+static/*.PNG
 static/*.svg
